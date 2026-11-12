@@ -1,0 +1,16 @@
+model_list:
+  - model_name: gpt-4o
+    litellm_params:
+      model: azure/gpt-4o
+      api_base: os.environ/AZURE_API_BASE
+      api_version: os.environ/AZURE_API_VERSION
+      timeout: 90
+
+litellm_settings:
+  enable_azure_ad_token_refresh: true
+  public_model_groups:
+    - gpt-4o
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_connection_pool_limit: 5
