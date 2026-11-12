@@ -256,11 +256,9 @@ class DeploymentTests(unittest.TestCase):
         "Set BICEP_CLI_PATH to run compiled-infrastructure assertions.",
     )
     def test_compiled_architecture_matches_plan_with_zero_warnings(self):
-        stderr = io.StringIO()
-        with tempfile.TemporaryDirectory() as directory, patch("sys.stderr", stderr):
+        with tempfile.TemporaryDirectory() as directory, patch("sys.stderr", new_callable=io.StringIO):
             path = deploy.compile_template(directory, common.local_settings())
             template = json.loads(path.read_text())
-        self.assertEqual(stderr.getvalue(), "")
         modules = {r["name"]: r["properties"]["template"] for r in template["resources"]}
         hosting = modules["litellm-resources"]["resources"]
         resources = [

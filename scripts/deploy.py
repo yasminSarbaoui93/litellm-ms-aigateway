@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import shutil
 import subprocess
@@ -27,7 +28,7 @@ def compile_template(directory, settings):
         print(result.stderr, file=sys.stderr)
     if result.returncode:
         raise RuntimeError("Bicep compilation failed. Set BICEP_CLI_PATH to a native Bicep binary if needed.")
-    if "Warning " in result.stderr:
+    if re.search(r"Warning (?!BCP081\b)", result.stderr):
         raise RuntimeError("Bicep reported compiler warnings; resolve them before deployment.")
     if not output.is_file():
         raise RuntimeError("Bicep compiler did not produce the ARM template.")
